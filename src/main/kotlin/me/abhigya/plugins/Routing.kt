@@ -9,7 +9,6 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 fun Application.configureRouting() {
-    install(Resources)
     routing {
         get("/") {
             call.respondText("Hello World!")
