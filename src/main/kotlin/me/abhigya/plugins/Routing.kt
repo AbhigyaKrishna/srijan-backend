@@ -1,25 +1,20 @@
 package me.abhigya.plugins
 
-import io.ktor.resources.*
 import io.ktor.server.application.*
-import io.ktor.server.resources.*
-import io.ktor.server.resources.Resources
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
+import me.abhigya.routes.artist
+import me.abhigya.routes.events
+import me.abhigya.routes.shop
+import org.ktorm.database.Database
+import toothpick.ktp.KTP
+import toothpick.ktp.extension.getInstance
 
 fun Application.configureRouting() {
+    val database = KTP.openRootScope().getInstance<Database>()
+
     routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-        get<Articles> { article ->
-            // Get all articles ...
-            call.respond("List of articles sorted starting from ${article.sort}")
-        }
+        artist(database)
+        shop(database)
+        events(database)
     }
 }
-
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")
